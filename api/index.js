@@ -1,6 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser');
-const sequelize = require('./config/dbConnect');
+const sequelize = require('./Config/dbConnect');
 require('dotenv').config()
 
 const app = express()
