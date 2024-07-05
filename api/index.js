@@ -1,12 +1,15 @@
 const express = require('express')
 const bodyParser = require('body-parser');
 const sequelize = require('./Config/dbConnect');
+const authRoutes = require('./Routes/auth.route');
 require('dotenv').config()
 
 const app = express()
 
 //Middleware
 app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const port = process.env.PORT || 4000;
 
@@ -14,6 +17,8 @@ const port = process.env.PORT || 4000;
 app.get('/', (req, res) => {
     res.send('Hello World');
 })
+
+app.use('/auth', authRoutes);
 
 sequelize.sync().then(() => {
   app.listen(port, () => {

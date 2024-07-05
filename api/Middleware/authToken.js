@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const { User } = require("../Models");
+const { User } = require('../Models/user.model');
 require("dotenv").config();
 
 // Middleware to authenticate token
@@ -12,13 +12,12 @@ const authenticateToken = async (req, res, next) => {
 
   // Verify token
   try {
-    jwt.verify(token, process.env.JWT_SECRET, async (err, user) => {
-      if (err) return res.status(403).send({ message: "Invalid Token" });
-      req.user = await User.findByPk(user.userId);
-      next();
-    });
-  } catch {
-    res.status(401).send({ message: "Invalid Token" });
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = await User.findByPk(decoded.userId);
+    if (!req.user) return res.status(401).send({ message: "Invalid Token" });
+    next();
+  } catch (err) {
+    res.status(403).send({ message: "Invalid Token" });
   }
 };
 

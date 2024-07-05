@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { User, Organisation } = require('../Models');
+const  User  = require('../Models/user.model');
+const Organisation = require('../Models/organisation.model')
 const { validationResult } = require('express-validator');
 
 
@@ -56,7 +57,7 @@ const register = async (req, res) => {
 
 
 // Login a user
-login = async (req, res) => {
+const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -105,4 +106,4 @@ login = async (req, res) => {
   }
 };
 
-module.exports = { register, login}
+module.exports = { register, login }
