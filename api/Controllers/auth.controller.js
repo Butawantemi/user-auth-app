@@ -81,7 +81,7 @@ const login = async (req, res) => {
       });
     }
 
-    const token = jwt.sign({ userId: user.userId }, 'your_jwt_secret', { expiresIn: '1h' });
+    const token = jwt.sign({ userId: user.userId }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
     res.status(200).json({
       status: 'success',
@@ -106,4 +106,48 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { register, login }
+// Get user details
+const getUser = async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    // Fetch user details along with organizations they belong to or created
+    const user = await User.findOne({
+      where: { userId },
+      include: [
+        {
+          model: Organisation,
+          through: { attributes: [] } // Exclude the join table attributes
+        }
+      ]
+    });
+
+    if (!user) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'User not found',
+        statusCode: 404
+      });
+    }
+
+    res.status(200).json({
+      status: 'success',
+      message: 'User details fetched successfully',
+      data: {
+        userId: user.userId,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        phone: user.phone
+      }
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'error',
+      message: 'An error occurred while fetching user details',
+      statusCode: 500
+    });
+  }
+};
+
+module.exports = { register, login, getUser }

@@ -13,12 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 
 const port = process.env.PORT || 4000;
 
-
-app.get('/', (req, res) => {
-    res.send('Hello World');
-})
-
-app.use('/auth', authRoutes);
+app.use('/', authRoutes);
 
 sequelize.sync().then(() => {
   app.listen(port, () => {
