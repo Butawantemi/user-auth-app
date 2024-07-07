@@ -14,6 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 const port = process.env.PORT || 4000;
 
 app.use('/', authRoutes);
+app.use('/api/organisations', organisationRoutes);
 
 sequelize.sync().then(() => {
   app.listen(port, () => {
