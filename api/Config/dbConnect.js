@@ -1,8 +1,6 @@
 const { Sequelize } = require('sequelize');
 require('dotenv').config();
 
-console.log('Database URL:', process.env.DATABASE_URL); // Debugging line
-
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
   dialect: 'postgres',
   dialectOptions: {

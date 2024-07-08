@@ -2,6 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser');
 const sequelize = require('./Config/dbConnect');
 const authRoutes = require('./Routes/auth.route');
+const organisationRoutes = require('./Routes/org.route')
 require('dotenv').config()
 
 const app = express()
