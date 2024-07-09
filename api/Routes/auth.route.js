@@ -9,7 +9,7 @@ router.post('/auth/register', [
   body('firstName').notEmpty().withMessage('First name is required'),
   body('lastName').notEmpty().withMessage('Last name is required'),
   body('email').isEmail().withMessage('Invalid email').notEmpty().withMessage('Email is required'),
-  body('password').notEmpty().withMessage('Password is required'),
+  body('password').notEmpty().withMessage('Password is required')
 ], register);
 
 // Routes for login a user

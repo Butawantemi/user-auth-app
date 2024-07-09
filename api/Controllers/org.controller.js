@@ -3,19 +3,13 @@ const User = require("../Models/user.model");
 
 const getOrganisations = async (req, res) => {
   try {
-    const user = await User.findByPk(req.user.userId, {
-      include: Organisation,
-    });
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
+    const organisations = await Organisation.findAll();
 
     res.status(200).json({
       status: "success",
       message: "Organisations fetched successfully",
       data: {
-        organisations: user.Organisations,
+        organisations: organisations,
       },
     });
   } catch (error) {
@@ -25,9 +19,13 @@ const getOrganisations = async (req, res) => {
 
 const getOrganisation = async (req, res) => {
   try {
-    const organisation = await Organisation.findByPk(req.params.orgId);
+    const { orgId } = req.params;
+    console.log(`Fetching organisation with orgId: ${orgId}`);
+
+    const organisation = await Organisation.findOne({ where: { orgId } });
 
     if (!organisation) {
+      console.log('Organisation not found');
       return res.status(404).json({ message: "Organisation not found" });
     }
 
@@ -37,6 +35,7 @@ const getOrganisation = async (req, res) => {
       data: organisation,
     });
   } catch (error) {
+    console.error('Error fetching organisation:', error);
     res.status(500).json({ message: "Internal server error" });
   }
 };

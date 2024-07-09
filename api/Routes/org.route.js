@@ -1,6 +1,5 @@
 const express = require("express");
 const { body } = require("express-validator");
-const { authenticateToken } = require("../Middleware/authToken");
 const {
   getOrganisations,
   getOrganisation,
@@ -10,17 +9,15 @@ const {
 
 const router = express.Router();
 
-router.get("/", authenticateToken, getOrganisations);
-router.get("/:orgId", authenticateToken, getOrganisation);
+router.get("/", getOrganisations);
+router.get("/:orgId", getOrganisation);
 router.post(
   "/",
-  authenticateToken,
   [body("name").notEmpty().withMessage("Organisation name is required")],
   createOrganisation
 );
 router.post(
   "/:orgId/users",
-  authenticateToken,
   [body("userId").notEmpty().withMessage("User ID is required")],
   addUserToOrganisation
 );
